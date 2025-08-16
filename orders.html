@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OMID - سفارشات من</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body class="orders-page">
+  <div id="header-background" class="header-background"></div>
+
+  <!-- هدر مینیمال برای صفحات داخلی -->
+  <header id="main-header" class="main-header active auth-header">
+    <div class="header-container">
+      <a class="back-link" href="index.html" aria-label="بازگشت به صفحه اصلی">
+        <svg class="icon-outline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        بازگشت
+      </a>
+
+      <h1 class="logo">OMID</h1>
+
+      <button id="theme-toggle" class="theme-toggle" aria-label="تغییر تم">
+        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <img class="icon-moon" src="images/moon-icon.png" alt="Dark Mode Icon"/>
+      </button>
+    </div>
+  </header>
+
+  <div id="page-content" class="page-content">
+    <main>
+      <div class="orders-container">
+        <div class="orders-header">
+          <h2 class="section-title">سفارشات من</h2>
+          <p class="subtitle">مرور وضعیت سفارش‌ها، رهگیری مرسولات و دانلود فاکتور</p>
+        </div>
+
+        <!-- نوار فیلتر (بدون تاریخ) -->
+        <div class="filters-bar">
+          <div class="filter search">
+            <input id="q" type="search" placeholder="جستجو در سفارش‌ها (کد سفارش، کالا...)" />
+          </div>
+          <div class="filter">
+            <select id="status">
+              <option value="all">همه وضعیت‌ها</option>
+              <option value="processing">در حال پردازش</option>
+              <option value="shipped">ارسال شده</option>
+              <option value="delivered">تحویل شده</option>
+              <option value="canceled">لغو شده</option>
+              <option value="returned">مرجوع شده</option>
+            </select>
+          </div>
+          <button id="clearFilters" class="btn outline">حذف فیلترها</button>
+        </div>
+
+        <!-- تب‌های وضعیت -->
+        <div class="status-tabs">
+          <button class="chip active" data-status="all">همه</button>
+          <button class="chip" data-status="processing">در حال پردازش</button>
+          <button class="chip" data-status="shipped">ارسال شده</button>
+          <button class="chip" data-status="delivered">تحویل شده</button>
+          <button class="chip" data-status="canceled">لغو شده</button>
+          <button class="chip" data-status="returned">مرجوع شده</button>
+        </div>
+
+        <!-- لیست سفارش‌ها -->
+        <div id="orders-list" class="orders-list"></div>
+
+        <!-- وضعیت خالی -->
+        <div id="empty-state" class="empty-state" hidden>
+          <img src="images/accessories.webp" alt="No Orders" />
+          <h3>فعلاً سفارشی ندارید</h3>
+          <p>از دسته‌بندی‌ها دیدن کنید و اولین سفارشتان را ثبت کنید.</p>
+          <a class="btn primary" href="index.html#page-content">شروع خرید</a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // تم ذخیره‌شده
+    const applyTheme = (t) => {
+      document.documentElement.setAttribute('data-theme', t);
+      localStorage.setItem('theme', t);
+    };
+    applyTheme(localStorage.getItem('theme') || 'light');
+    document.getElementById('theme-toggle')?.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme');
+      applyTheme(current === 'light' ? 'dark' : 'light');
+    });
+
+    // داده نمونه سفارش‌ها (در عمل از API بگیرید)
+    const orders = [
+      {
+        id: 'OM-2025-0003',
+        date: '2025-01-08T10:35:00Z',
+        status: 'processing',
+        total: 2890000,
+        items: [
+          { title: 'پیراهن لینن مردانه', variant: 'سفید / L', qty: 1, price: 1290000, img: 'images/shirts.webp' },
+          { title: 'শلوار کتان زنانه', variant: 'مشکی / 38', qty: 1, price: 1600000, img: 'images/pants.webp' }
+        ],
+        shipping: { method: 'پست پیشتاز', address: 'تهران، خیابان نمونه، پلاک ۱۰', tracking: '' }
+      },
+      {
+        id: 'OM-2025-0002',
+        date: '2025-01-04T16:12:00Z',
+        status: 'shipped',
+        total: 1990000,
+        items: [
+          { title: 'اکسسوری کیف چرمی', variant: 'قهوه‌ای', qty: 1, price: 1990000, img: 'images/accessories.webp' }
+        ],
+        shipping: { method: 'تیپاکس', address: 'کرج، گوهردشت، بلوک ۵', tracking: 'TRK-782341' }
+      },
+      {
+        id: 'OM-2024-1011',
+        date: '2024-12-26T09:02:00Z',
+        status: 'delivered',
+        total: 3490000,
+        items: [
+          { title: 'پیراهن راه‌راه', variant: 'آبی / M', qty: 1, price: 1390000, img: 'images/shirts.webp' },
+          { title: 'شلوار جین', variant: 'آبی تیره / 32', qty: 1, price: 2100000, img: 'images/pants.webp' }
+        ],
+        shipping: { method: 'چاپار', address: 'اصفهان، خیابان چهارباغ', tracking: 'CHP-553210' }
+      },
+      {
+        id: 'OM-2024-1005',
+        date: '2024-12-20T13:00:00Z',
+        status: 'canceled',
+        total: 890000,
+        items: [
+          { title: 'کمربند چرمی', variant: 'مشکی', qty: 1, price: 890000, img: 'images/accessories.webp' }
+        ],
+        shipping: { method: 'پست سفارشی', address: 'تبریز، ولیعصر', tracking: '' }
+      }
+    ];
+
+    // ابزارها
+    const fmtPrice = n => n.toLocaleString('fa-IR') + ' تومان';
+    const statusTitle = s => ({
+      processing: 'در حال پردازش',
+      shipped: 'ارسال شده',
+      delivered: 'تحویل شده',
+      canceled: 'لغو شده',
+      returned: 'مرجوع شده'
+    }[s] || s);
+
+    const listEl = document.getElementById('orders-list');
+    const emptyEl = document.getElementById('empty-state');
+
+    // کارت سفارش (بدون تاریخ) + مقادیر کنار متن
+    function orderCard(o) {
+      const imgs = o.items.slice(0,3).map(i => `<img src="${i.img}" alt="${i.title}"/>`).join('');
+      const more = o.items.length > 3 ? `<span class="more">+${o.items.length-3}</span>` : '';
+      const canCancel = o.status === 'processing';
+      const canReturn = o.status === 'delivered';
+      const tracking = o.shipping?.tracking;
+
+      return `
+        <div class="order-card" data-id="${o.id}">
+          <div class="order-head">
+            <div class="meta">
+              <span class="order-id">#${o.id}</span>
+            </div>
+            <span class="status-badge status-${o.status}">${statusTitle(o.status)}</span>
+          </div>
+
+          <div class="order-main">
+            <div class="thumbs">${imgs}${more}</div>
+
+            <div class="summary">
+              <div class="line"><span>تعداد اقلام:</span><strong>${o.items.reduce((a,b)=>a+b.qty,0).toLocaleString('fa-IR')}</strong></div>
+              <div class="line"><span>مبلغ کل:</span><strong>${fmtPrice(o.total)}</strong></div>
+            </div>
+
+            <div class="actions">
+              <button class="btn outline btn-details" data-action="toggle">جزئیات
+                <svg class="chev" viewBox="0 0 24 24" width="16" height="16"><polyline points="6 9 12 15 18 9" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+              </button>
+              <a class="btn outline" href="#" onclick="window.print();return false;">دانلود فاکتور</a>
+              ${canCancel ? `<button class="btn outline danger" data-action="cancel">لغو سفارش</button>` : ''}
+              ${canReturn ? `<button class="btn outline" data-action="return">درخواست مرجوعی</button>` : ''}
+            </div>
+          </div>
+
+          <div class="order-details" hidden>
+            <div class="details-grid">
+              <div class="items">
+                ${o.items.map(i => `
+                  <div class="item">
+                    <img src="${i.img}" alt="${i.title}"/>
+                    <div class="info">
+                      <div class="title">${i.title}</div>
+                      <div class="muted">${i.variant || ''}</div>
+                    </div>
+                    <div class="qty">× ${i.qty.toLocaleString('fa-IR')}</div>
+                    <div class="price">${fmtPrice(i.price)}</div>
+                  </div>
+                `).join('')}
+              </div>
+              <div class="shipping">
+                <div class="row"><span class="label">روش ارسال:</span><span>${o.shipping?.method || '-'}</span></div>
+                <div class="row"><span class="label">آدرس:</span><span>${o.shipping?.address || '-'}</span></div>
+                <div class="row"><span class="label">کد رهگیری:</span><span>${tracking ? tracking : '-'}</span></div>
+                ${tracking ? `<a class="btn outline w-100" target="_blank" href="https://tracking.post.ir/">پیگیری مرسوله</a>` : ''}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // فیلتر و رندر (بدون تاریخ)
+    function applyFilters() {
+      const q = document.getElementById('q').value.trim().toLowerCase();
+      const status = document.getElementById('status').value;
+
+      let result = orders.slice();
+
+      if (status !== 'all') result = result.filter(o => o.status === status);
+      if (q) {
+        result = result.filter(o =>
+          o.id.toLowerCase().includes(q) ||
+          o.items.some(i => (i.title + ' ' + (i.variant || '')).toLowerCase().includes(q)) ||
+          (o.shipping?.tracking || '').toLowerCase().includes(q)
+        );
+      }
+
+      render(result);
+    }
+
+    function render(list) {
+      if (!list.length) {
+        listEl.innerHTML = '';
+        emptyEl.hidden = false;
+        return;
+      }
+      emptyEl.hidden = true;
+      listEl.innerHTML = list
+        .sort((a,b) => new Date(b.date) - new Date(a.date))
+        .map(orderCard).join('');
+    }
+
+    // رویدادها
+    document.getElementById('q').addEventListener('input', applyFilters);
+    document.getElementById('status').addEventListener('change', (e) => {
+      // همگام‌سازی تب‌ها
+      document.querySelectorAll('.status-tabs .chip').forEach(c => {
+        c.classList.toggle('active', c.dataset.status === e.target.value || (e.target.value === 'all' && c.dataset.status === 'all'));
+      });
+      applyFilters();
+    });
+
+    document.getElementById('clearFilters').addEventListener('click', () => {
+      document.getElementById('q').value = '';
+      document.getElementById('status').value = 'all';
+      document.querySelectorAll('.status-tabs .chip').forEach((c, i) => c.classList.toggle('active', i===0));
+      applyFilters();
+    });
+
+    // کلیک روی تب‌های وضعیت
+    document.querySelectorAll('.status-tabs .chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.status-tabs .chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        document.getElementById('status').value = chip.dataset.status;
+        applyFilters();
+      });
+    });
+
+    // اکشن‌های کارت‌ها (نمایش جزئیات/لغو/مرجوعی)
+    listEl.addEventListener('click', (e) => {
+      const btn = e.target.closest('button, a');
+      if (!btn) return;
+
+      const card = e.target.closest('.order-card');
+      const id = card?.dataset.id;
+      const order = orders.find(o => o.id === id);
+      const action = btn.dataset.action;
+
+      if (action === 'toggle') {
+        const details = card.querySelector('.order-details');
+        details.hidden = !details.hidden;
+        card.classList.toggle('open', !details.hidden);
+        return;
+      }
+
+      if (action === 'cancel') {
+        if (order.status !== 'processing') return;
+        if (confirm('از لغو این سفارش مطمئن هستید؟')) {
+          order.status = 'canceled';
+          applyFilters();
+        }
+      }
+
+      if (action === 'return') {
+        if (order.status !== 'delivered') return;
+        alert('درخواست مرجوعی ثبت شد. همکاران ما با شما تماس می‌گیرند.');
+      }
+    });
+
+    // شروع
+    applyFilters();
+  </script>
+</body>
+</html>
