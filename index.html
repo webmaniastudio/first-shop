@@ -1,26 +1,24 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl" data-theme="light">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OMID - خانه مد</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WEB MANIA - خانه مد</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet"/>
 
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css"/>
 </head>
-<body>
-
+<body class="home-page">
   <div id="header-background" class="header-background"></div>
 
   <header id="main-header" class="main-header">
     <div class="header-container">
-      <h1 class="logo">OMID</h1>
+      <h1 class="logo">Web Mania</h1>
 
-      <!-- دکمه تغییر تم -->
-      <button id="theme-toggle" class="theme-toggle">
+      <button id="theme-toggle" class="theme-toggle" aria-label="تغییر تم">
         <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <circle cx="12" cy="12" r="5"></circle>
           <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -32,74 +30,62 @@
           <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
           <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
         </svg>
-        <img class="icon-moon" src="images/moon-icon.png" alt="Dark Mode Icon">
+        <img class="icon-moon" src="images/moon-icon.png" alt="Dark Mode Icon"/>
       </button>
 
-      <!-- آیکون‌های هدر -->
       <div class="header-icons">
         <div class="disappearing-icons">
           <div id="profile-menu-container" class="profile-menu-container">
-            <svg id="profile-icon" class="icon-user icon-solid" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <svg id="profile-icon" class="icon-user icon-solid" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="پروفایل">
               <path d="M12,12A6,6,0,1,0,6,6,6.006,6.006,0,0,0,12,12ZM12,2A4,4,0,1,1,8,6,4,4,0,0,1,12,2Z"/>
               <path d="M12,14a9.01,9.01,0,0,0-9,9,1,1,0,0,0,2,0,7,7,0,0,1,14,0,1,1,0,0,0,2,0A9.01,9.01,0,0,0,12,14Z"/>
             </svg>
-            <div class="profile-dropdown">
-              <!-- داخل .profile-dropdown -->
+            <div class="profile-dropdown" role="menu">
               <a href="auth.html">ثبت نام / ورود</a>
               <a href="orders.html">سفارشات</a>
-              <a href="#">تنظیمات اکانت</a>
-              <a href="#">آیتم های مورد علاقه</a>
             </div>
           </div>
         </div>
 
-        <div id="search-container" class="search-container">
-          <input type="text" class="search-input" placeholder="جستجو...">
-          <svg id="search-icon" class="icon-search icon-solid" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M21.71,20.29,18,16.61A9,9,0,1,0,16.61,18l3.68,3.68a1,1,0,0,0,1.42,0A1,1,0,0,0,21.71,20.29ZM11,18a7,7,0,1,1,7-7A7,7,0,0,1,11,18Z"/>
-          </svg>
-        </div>
-
-        <svg id="menu-toggle" class="icon-menu icon-outline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <svg id="menu-toggle" class="icon-menu icon-outline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label="منو">
           <line x1="3" y1="12" x2="21" y2="12"></line>
           <line x1="3" y1="6" x2="21" y2="6"></line>
           <line x1="3" y1="18" x2="21" y2="18"></line>
         </svg>
       </div>
 
-      <a href="#page-content" class="hero-button">خرید آنلاین</a>
+      <a href="shop.html" class="hero-button">خرید آنلاین</a>
     </div>
   </header>
 
-  <!-- منوی کشویی -->
-  <nav id="nav-drawer" class="nav-drawer">
+  <nav id="nav-drawer" class="nav-drawer" aria-label="ناوبری جانبی">
     <div class="nav-drawer-header">
       <h3>دسته بندی ها</h3>
-      <button id="close-menu-btn" class="close-menu-btn">
+      <button id="close-menu-btn" class="close-menu-btn" aria-label="بستن منو">
         <svg class="icon-outline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
       </button>
     </div>
     <ul>
-      <li><a href="#">مردانه</a></li>
-      <li><a href="#">زنانه</a></li>
-      <li><a href="#">بچگانه</a></li>
-      <li><a href="#">اکسسوری ها</a></li>
-      <li><a href="#">سفر</a></li>
-      <li><a href="#">عطر ها</a></li>
-      <li><a href="#">لوازم آرایشی</a></li>
-      <li><a href="#">کادو ها</a></li>
+      <li><a href="shop.html">فروشگاه</a></li>
+      <li><a href="shop.html">دسته بندی ها</a></li>
       <li><a href="#contact">ارتباط با ما</a></li>
     </ul>
   </nav>
-  <div id="overlay" class="overlay"></div>
+  <div id="overlay" class="overlay" aria-hidden="true"></div>
 
   <div id="page-content" class="page-content">
     <main>
       <h2 class="section-title">منتخب خانه مد</h2>
       <div class="category-grid">
-        <a href="#" class="category-card"><div class="image-container"><img src="images/shirts.webp" alt="پیراهن"></div><h3>پیراهن</h3></a>
-        <a href="#" class="category-card"><div class="image-container"><img src="images/pants.webp" alt="شلوار"></div><h3>شلوار</h3></a>
-        <a href="#" class="category-card"><div class="image-container"><img src="images/accessories.webp" alt="اکسسوری"></div><h3>اکسسوری</h3></a>
+        <a href="shop.html" class="category-card">
+          <div class="image-container"><img src="images/shirts.webp" alt="پیراهن"></div><h3>پیراهن</h3>
+        </a>
+        <a href="shop.html" class="category-card">
+          <div class="image-container"><img src="images/pants.webp" alt="شلوار"></div><h3>شلوار</h3>
+        </a>
+        <a href="shop.html" class="category-card">
+          <div class="image-container"><img src="images/accessories.webp" alt="اکسسوری"></div><h3>اکسسوری</h3>
+        </a>
       </div>
 
       <div class="section-divider"></div>
@@ -108,7 +94,7 @@
         <h2 class="section-title">ارتباط با ما</h2>
         <p>برای هرگونه سوال، پیشنهاد یا انتقاد از طریق فرم زیر با ما در تماس باشید:</p>
 
-        <form class="contact-form">
+        <form id="contact-form" class="contact-form">
           <input type="text" name="name" placeholder="نام شما" required>
           <input type="email" name="email" placeholder="ایمیل شما" required>
           <textarea name="message" rows="5" placeholder="پیام شما" required></textarea>
@@ -116,7 +102,7 @@
         </form>
 
         <div class="contact-info">
-          <p><strong>ایمیل:</strong> info@omidfashion.com</p>
+          <p><strong>ایمیل:</strong> info@webmania.com</p>
           <p><strong>تلفن:</strong> 021-12345678</p>
           <p><strong>آدرس:</strong> تهران، خیابان نمونه، پلاک ۱۰</p>
         </div>
@@ -124,7 +110,8 @@
     </main>
   </div>
 
-  <script src="script.js"></script>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js" defer></script>
 </body>
 </html>
-

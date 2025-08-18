@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WEB MANIA - خرید</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body class="shop-page">
+  <div id="header-background" class="header-background"></div>
+
+  <header id="main-header" class="main-header active auth-header">
+    <div class="header-container">
+      <a class="back-link" href="index.html" aria-label="بازگشت به صفحه اصلی">
+        <svg class="icon-outline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        بازگشت
+      </a>
+
+      <h1 class="logo"><a href="index.html" class="logo-link">Shop </a></h1>
+
+      <button id="theme-toggle" class="theme-toggle" aria-label="تغییر تم">
+        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <img class="icon-moon" src="images/moon-icon.png" alt="Dark Mode Icon"/>
+      </button>
+    </div>
+  </header>
+
+  <div id="page-content" class="page-content">
+    <main>
+      <div class="shop-container">
+        <nav class="breadcrumbs" aria-label="breadcrumb">
+          <a href="index.html">خانه</a>
+          <span>/</span>
+          <a href="#">دسته‌بندی‌ها</a>
+          <span>/</span>
+          <span aria-current="page">ساعت مچی</span>
+        </nav>
+
+        <div class="search-row">
+          <div class="search-in-cat">
+            <svg class="icon" viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M21.71,20.29,18,16.61A9,9,0,1,0,16.61,18l3.68,3.68a1,1,0,0,0,1.42,0A1,1,0,0,0,21.71,20.29ZM11,18a7,7,0,1,1,7-7A7,7,0,0,1,11,18Z"/></svg>
+            <input id="q" type="search" placeholder="جستجو در ساعت مچی..." />
+          </div>
+          <div class="category-chips" id="categoryChips"></div>
+        </div>
+
+        <div class="toolbar">
+          <div class="sorter">
+            <span class="muted">مرتب‌سازی:</span>
+            <div class="chips" id="sortChips">
+              <button class="chip active" data-sort="relevance">مرتبط‌ترین</button>
+              <button class="chip" data-sort="newest">جدیدترین</button>
+              <button class="chip" data-sort="bestseller">پرفروش‌ترین</button>
+              <button class="chip" data-sort="cheap">ارزان‌ترین</button>
+              <button class="chip" data-sort="expensive">گران‌ترین</button>
+            </div>
+          </div>
+          <div class="toolbar-actions">
+            <button id="openFilters" class="btn outline show-on-mobile">فیلترها</button>
+            <span id="resultCount" class="muted"></span>
+          </div>
+        </div>
+
+        <div class="shop-content">
+          <aside id="sidebar" class="sidebar" data-movable="true">
+            <div class="filter-group">
+              <div class="filter-title">جستجوهای مرتبط</div>
+              <ul class="related">
+                <li><button class="link-like related-btn" data-tag="مردانه">ساعت مچی مردانه</button></li>
+                <li><button class="link-like related-btn" data-tag="زنانه">ساعت مچی زنانه</button></li>
+                <li><button class="link-like related-btn" data-tag="دیجیتال">ساعت مچی دیجیتال</button></li>
+                <li><button class="link-like related-btn" data-tag="کلاسیک">ساعت مچی کلاسیک</button></li>
+                <li><button class="link-like related-btn" data-tag="هوشمند">ساعت مچی هوشمند</button></li>
+              </ul>
+            </div>
+
+            <div class="filter-group">
+              <div class="filter-title">برند</div>
+              <div id="brandFilters" class="checks"></div>
+            </div>
+
+            <div class="filter-group">
+              <div class="filter-title">مناسب برای</div>
+              <div id="genderFilters" class="checks"></div>
+            </div>
+
+            <div class="filter-group">
+              <div class="filter-title">قیمت</div>
+              <div class="price-box">
+                <input type="number" id="priceMin" placeholder="از (تومان)" min="0" />
+                <input type="number" id="priceMax" placeholder="تا (تومان)" min="0" />
+              </div>
+              <button id="clearPrice" class="btn outline w-100">حذف محدوده قیمت</button>
+            </div>
+
+            <button id="clearAll" class="btn outline w-100">حذف همه فیلترها</button>
+          </aside>
+
+          <section class="products">
+            <div id="productsGrid" class="products-grid"></div>
+            <nav class="pagination" id="pagination" aria-label="pagination"></nav>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="filtersDrawer" class="filters-drawer" aria-hidden="true">
+    <div class="drawer-content">
+      <div class="drawer-head">
+        <h3>فیلترها</h3>
+        <button id="closeFilters" class="btn outline">بستن</button>
+      </div>
+      <div class="drawer-body"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

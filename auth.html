@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>OMID - ورود / ثبت‌نام</title>
+  <title>WEB MANIA - ورود / ثبت‌نام</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -12,10 +12,8 @@
   <link rel="stylesheet" href="styles.css"/>
 </head>
 <body class="auth-page">
-  <!-- پس‌زمینه هدر (در این صفحه مخفی می‌شود) -->
   <div id="header-background" class="header-background"></div>
 
-  <!-- هدر مینیمال صفحه احراز هویت -->
   <header id="main-header" class="main-header active auth-header">
     <div class="header-container">
       <a class="back-link" href="index.html" aria-label="بازگشت به صفحه اصلی">
@@ -25,7 +23,9 @@
         بازگشت
       </a>
 
-      <h1 class="logo">OMID</h1>
+      <h1 class="logo">
+        <a href="index.html" class="logo-link" aria-label="بازگشت به صفحه اصلی">Account </a>
+      </h1>
 
       <button id="theme-toggle" class="theme-toggle" aria-label="تغییر تم">
         <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -48,14 +48,12 @@
     <main>
       <div class="auth-container">
         <div class="auth-card">
-          <!-- تب‌ها -->
           <div class="auth-tabs" role="tablist">
             <button class="auth-tab active" data-target="#login" role="tab" aria-selected="true">ورود</button>
             <button class="auth-tab" data-target="#signup" role="tab" aria-selected="false">ثبت نام</button>
           </div>
 
           <div class="auth-panels">
-            <!-- فرم ورود -->
             <form id="login" class="auth-form active" novalidate>
               <div class="input-group">
                 <label for="login-email">ایمیل</label>
@@ -89,7 +87,6 @@
               <div class="form-message" aria-live="polite"></div>
             </form>
 
-            <!-- فرم ثبت نام -->
             <form id="signup" class="auth-form" novalidate>
               <div class="input-group">
                 <label for="signup-name">نام و نام خانوادگی</label>
@@ -139,12 +136,11 @@
           </div>
         </div>
 
-        <p class="auth-note">با ورود یا ثبت‌نام، شما با شرایط و قوانین OMID موافقت می‌کنید.</p>
+        <p class="auth-note">با ورود یا ثبت‌نام، شما با شرایط و قوانین WEB MANIA موافقت می‌کنید.</p>
       </div>
     </main>
   </div>
 
-  <!-- مودال بازیابی رمز -->
   <div id="reset-modal" class="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="reset-title">
     <div class="modal-content">
       <h3 id="reset-title">بازیابی رمز عبور</h3>
@@ -159,154 +155,6 @@
     </div>
   </div>
 
-  <!-- اسکریپت‌ها -->
-  <script>
-    // تم ذخیره‌شده
-    const applyTheme = (t) => {
-      document.documentElement.setAttribute('data-theme', t);
-      localStorage.setItem('theme', t);
-    };
-    applyTheme(localStorage.getItem('theme') || 'light');
-
-    // سوئیچ تم
-    const themeToggle = document.getElementById('theme-toggle');
-    themeToggle?.addEventListener('click', () => {
-      const current = document.documentElement.getAttribute('data-theme');
-      applyTheme(current === 'light' ? 'dark' : 'light');
-    });
-
-    // سوئیچ تب‌ها
-    const tabs = document.querySelectorAll('.auth-tab');
-    const forms = document.querySelectorAll('.auth-form');
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        tabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        const target = document.querySelector(tab.dataset.target);
-        forms.forEach(f => f.classList.remove('active'));
-        target?.classList.add('active');
-      });
-    });
-
-    // نمایش/مخفی کردن رمز
-    document.querySelectorAll('.toggle-password').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const input = btn.previousElementSibling;
-        if (!input) return;
-        input.type = input.type === 'password' ? 'text' : 'password';
-        btn.textContent = input.type === 'password' ? '👁' : '👁‍🗨';
-      });
-    });
-
-    // قدرت رمز (ثبت‌نام)
-    const pwd = document.getElementById('signup-password');
-    const bar = document.querySelector('.password-strength .bar');
-    const strength = (val) => {
-      let s = 0;
-      if (val.length >= 8) s++;
-      if (/[A-Za-z]/.test(val)) s++;
-      if (/[0-9]/.test(val)) s++;
-      if (/[^A-Za-z0-9]/.test(val)) s++;
-      return s; // 0..4
-    };
-    pwd?.addEventListener('input', (e) => {
-      const val = e.target.value;
-      const score = strength(val);
-      const width = (score / 4) * 100;
-      bar.style.width = width + '%';
-      bar.dataset.score = String(score);
-    });
-
-    // اعتبارسنجی پایه
-    const setError = (input, message) => {
-      const err = input.parentElement.querySelector('.field-error');
-      if (err) err.textContent = message || '';
-      input.classList.toggle('invalid', !!message);
-    };
-
-    const emailValid = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-    document.getElementById('login')?.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const form = e.target;
-      const email = form.email;
-      const password = form.password;
-      let ok = true;
-
-      if (!emailValid(email.value)) {
-        setError(email, 'ایمیل معتبر نیست');
-        ok = false;
-      } else setError(email, '');
-
-      if (!password.value) {
-        setError(password, 'رمز عبور الزامی است');
-        ok = false;
-      } else setError(password, '');
-
-      const msg = form.querySelector('.form-message');
-      if (ok) {
-        msg.textContent = 'ورود با موفقیت انجام شد. در حال انتقال...';
-        msg.classList.add('success');
-        setTimeout(() => {
-          window.location.href = 'index.html';
-        }, 900);
-      } else {
-        msg.textContent = 'لطفا خطاهای فرم را برطرف کنید.';
-        msg.classList.remove('success');
-      }
-    });
-
-    document.getElementById('signup')?.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const form = e.target;
-      const name = form.name;
-      const email = form.email;
-      const phone = form.phone;
-      const password = form.password;
-      const confirm = form.confirm;
-      const terms = form.terms;
-      let ok = true;
-
-      if (!name.value.trim()) { setError(name, 'نام را وارد کنید'); ok = false; } else setError(name, '');
-      if (!emailValid(email.value)) { setError(email, 'ایمیل معتبر نیست'); ok = false; } else setError(email, '');
-      if (phone.value && !/^09\d{9}$/.test(phone.value)) { setError(phone, 'شماره موبایل معتبر نیست'); ok = false; } else setError(phone, '');
-      if (password.value.length < 8 || !(/[A-Za-z]/.test(password.value) && /[0-9]/.test(password.value))) {
-        setError(password, 'رمز باید حداقل ۸ کاراکتر و شامل حرف و عدد باشد');
-        ok = false;
-      } else setError(password, '');
-      if (confirm.value !== password.value) { setError(confirm, 'تکرار رمز مطابقت ندارد'); ok = false; } else setError(confirm, '');
-      if (!terms.checked) ok = false;
-
-      const msg = form.querySelector('.form-message');
-      if (ok) {
-        msg.textContent = 'ثبت‌نام انجام شد! اکنون می‌توانید وارد شوید.';
-        msg.classList.add('success');
-        // سوییچ خودکار به تب ورود
-        document.querySelector('.auth-tab[data-target="#login"]').click();
-      } else {
-        msg.textContent = 'لطفا خطاهای فرم را برطرف کنید.';
-        msg.classList.remove('success');
-      }
-    });
-
-    // مودال فراموشی رمز
-    const modal = document.getElementById('reset-modal');
-    const forgot = document.getElementById('forgot-link');
-    const closeReset = document.getElementById('close-reset');
-    forgot?.addEventListener('click', (e) => {
-      e.preventDefault();
-      modal.classList.add('open');
-      modal.setAttribute('aria-hidden', 'false');
-    });
-    closeReset?.addEventListener('click', () => {
-      modal.classList.remove('open');
-      modal.setAttribute('aria-hidden', 'true');
-    });
-    document.getElementById('reset-form')?.addEventListener('submit', (e) => {
-      e.preventDefault();
-      modal.classList.remove('open');
-      alert('اگر ایمیل شما ثبت شده باشد، لینک بازیابی ارسال می‌شود.');
-    });
-  </script>
+  <script src="script.js" defer></script>
 </body>
 </html>
